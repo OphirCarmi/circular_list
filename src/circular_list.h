@@ -17,7 +17,7 @@ class CircularList {
       curr_ = root_;
       return;
     }
-    for (std::shared_ptr<Node> ptr = root_; ptr->item != item; ptr = ptr->next) {
+    for (std::shared_ptr<Node> ptr = root_;; ptr = ptr->next) {
       if (ptr->next == root_) {
         ptr->next = std::make_shared<Node>();
         ptr = ptr->next;

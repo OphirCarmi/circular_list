@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.16.0)
 
-project(test-circular-list)
+project(simple)
 
 message("start configuring ${PROJECT_NAME}")
 
 option(DEBUG "Compile with -O0 else -O3" OFF)
 
 include_directories(${PROJECT_SOURCE_DIR}/../)
-include_directories(${PROJECT_SOURCE_DIR}/3rdparty/googletest/googletest/include/)
+include_directories(${PROJECT_SOURCE_DIR}/../src/)
 
 set(MY_CXX_FLAGS
     "-Wall \
@@ -29,10 +29,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MY_CXX_FLAGS}")
 
 add_executable(
   ${PROJECT_NAME}
-  ${PROJECT_SOURCE_DIR}/test_circular_list.cpp
-  ${PROJECT_SOURCE_DIR}/test_circular_list.cpp
+  ${PROJECT_SOURCE_DIR}/simple.cpp
   )
-
-target_link_libraries(${PROJECT_NAME} gtest_main)
 
 message("end configuring ${PROJECT_NAME}")

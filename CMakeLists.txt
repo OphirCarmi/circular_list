@@ -6,6 +6,8 @@ option(TESTS "compile tests" OFF)
 
 message("start configuring ${PROJECT_NAME}")
 
+add_subdirectory(examples/)
+
 if(TESTS)
   add_subdirectory(tests/3rdparty/googletest/)
 
