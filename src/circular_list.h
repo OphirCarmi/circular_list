@@ -3,13 +3,7 @@
 
 #include <memory>
 #include <mutex>
-
-template <typename T>
-struct Node {
-  Node() {}
-  T item;
-  std::shared_ptr<Node<T>> next;
-};
+#include <iostream>
 
 template <typename T>
 class CircularList {
@@ -17,23 +11,20 @@ class CircularList {
   void Insert(const T &item) {
     std::lock_guard<std::mutex> lock(m_);
     if (nullptr == root_) {
-      root_ = std::make_shared<Node<T>>();
+      root_ = std::make_shared<Node>();
       root_->item = item;
       root_->next = root_;
       curr_ = root_;
       return;
     }
-    std::shared_ptr<Node<T>> ptr = root_;
-    for (;;) {
-      if (ptr->item == item) break;
+    for (std::shared_ptr<Node> ptr = root_;ptr->item != item;ptr = ptr->next) {
       if (ptr->next == root_) {
-        ptr->next = std::make_shared<Node<T>>();
+        ptr->next = std::make_shared<Node>();
         ptr = ptr->next;
         ptr->item = item;
         ptr->next = root_;
         break;
       }
-      ptr = ptr->next;
     }
   }
 
@@ -41,20 +32,21 @@ class CircularList {
     std::lock_guard<std::mutex> lock(m_);
     if (nullptr == root_) 
       return false;
-    std::shared_ptr<Node<T>> before = root_;
-    std::shared_ptr<Node<T>> ptr = root_;
+    std::shared_ptr<Node> before = root_;
     for (;;) {
+      if (before->next == root_) break;
+      before = before->next;
+    }
+    for (std::shared_ptr<Node> ptr = root_;;ptr = ptr->next, before = before->next) {
       if (ptr->item == item) {
-        before->next = ptr->next;
         if (curr_ == ptr) curr_ = curr_->next;
-        break;
+        if (root_ == ptr) root_ = root_->next;
+        before->next = ptr->next;
+        return true;
       }
-      before = ptr;
-      ptr = ptr->next;
-      if (root_ == ptr)
+      if (root_ == ptr->next)
         return false;
     }
-    return true;
   }
 
   void Clear() {
@@ -67,11 +59,9 @@ class CircularList {
 
   size_t Size() const {
     if (nullptr == root_) return 0;
-    std::shared_ptr<Node<T>> ptr = root_;
+    std::shared_ptr<Node> ptr = root_->next;
     size_t sz = 1;
-    for (;; ++sz) {
-      ptr = ptr->next;
-      if (ptr == root_) break;
+    for (;ptr != root_; ptr = ptr->next, ++sz) {
     }
     return sz;
   }
@@ -87,32 +77,44 @@ class CircularList {
 
   int Index() const {
     if (nullptr == root_) return -1;
-    std::shared_ptr<Node<T>> ptr = root_;
+    std::shared_ptr<Node> ptr = root_;
     if (ptr == curr_) return 0;
-    int ind = 1;
-    for (;; ++ind) {
+    for (int ind = 1;; ++ind) {
       ptr = ptr->next;
-      if (ptr == curr_) break;
+      if (ptr == curr_) return ind;
     }
-    return ind;
   }
 
- private:
+  void Print() const {
+    if (nullptr == root_) return;
+    std::cout << "List elements:" << std::endl;
+    for (std::shared_ptr<Node> ptr = root_;;ptr = ptr->next) {
+      std::cout << ptr->item << std::endl;
+      if (ptr->next == root_) break;
+    }
+  }
+
   bool Find(const T &item) const {
     if (nullptr == root_) return false;
-    std::shared_ptr<Node<T>> ptr = root_;
+    std::shared_ptr<Node> ptr = root_;
     for (;;) {
       if (ptr->item == item) {
         return true;
       }
       ptr = ptr->next;
-      if (root_ == ptr) break;
+      if (root_ == ptr) return false;
     }
-    return false;
   }
 
-  std::shared_ptr<Node<T>> root_;
-  std::shared_ptr<Node<T>> curr_;
+ private:
+  struct Node {
+    Node() {}
+    T item;
+    std::shared_ptr<Node> next;
+  };
+
+  std::shared_ptr<Node> root_;
+  std::shared_ptr<Node> curr_;
   std::mutex m_;
 };
 
