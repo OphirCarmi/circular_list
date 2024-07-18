@@ -51,3 +51,38 @@ int main() {
   return 0;
 }
 ```
+
+Results:
+
+```
+List elements:
+24
+32
+30
+Is list empty? No
+Size of list: 3
+Is 70 in the list? No
+Is 24 in the list? Yes
+List elements:
+24
+30
+60
+30
+Next item is in index: 1 and its value: 30
+Next item is in index: 2 and its value: 60
+Next item is in index: 3 and its value: 30
+Next item is in index: 0 and its value: 24
+Next item is in index: 1 and its value: 30
+Next item is in index: 2 and its value: 60
+Next item is in index: 3 and its value: 30
+Next item is in index: 0 and its value: 24
+Next item is in index: 1 and its value: 30
+Next item is in index: 2 and its value: 60
+Next item is in index: 3 and its value: 30
+Next item is in index: 0 and its value: 24
+Next item is in index: 1 and its value: 30
+Next item is in index: 2 and its value: 60
+Next item is in index: 3 and its value: 30
+Clearing the list
+Size of the list: 0
+```
