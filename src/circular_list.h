@@ -76,17 +76,13 @@ class CircularList {
     return sz;
   }
 
-  T Next() {
+  void Next(T *out) {
     std::lock_guard<std::mutex> lock(m_);
 
-    if (nullptr == root_) {
-      T item;
-      item.x = -1;
-      item.y = -1;
-      return item;
-    }
+    if (nullptr == root_)
+      return;
     curr_ = curr_->next;
-    return curr_->item;
+    *out = curr_->item;
   }
 
   int Index() const {
