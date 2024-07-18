@@ -1,9 +1,9 @@
 #ifndef CIRCULAR_LIST_H_
 #define CIRCULAR_LIST_H_
 
+#include <iostream>
 #include <memory>
 #include <mutex>
-#include <iostream>
 
 template <typename T>
 class CircularList {
@@ -17,7 +17,7 @@ class CircularList {
       curr_ = root_;
       return;
     }
-    for (std::shared_ptr<Node> ptr = root_;ptr->item != item;ptr = ptr->next) {
+    for (std::shared_ptr<Node> ptr = root_; ptr->item != item; ptr = ptr->next) {
       if (ptr->next == root_) {
         ptr->next = std::make_shared<Node>();
         ptr = ptr->next;
@@ -30,22 +30,20 @@ class CircularList {
 
   bool Remove(const T &item) {
     std::lock_guard<std::mutex> lock(m_);
-    if (nullptr == root_) 
-      return false;
+    if (nullptr == root_) return false;
     std::shared_ptr<Node> before = root_;
     for (;;) {
       if (before->next == root_) break;
       before = before->next;
     }
-    for (std::shared_ptr<Node> ptr = root_;;ptr = ptr->next, before = before->next) {
+    for (std::shared_ptr<Node> ptr = root_;; ptr = ptr->next, before = before->next) {
       if (ptr->item == item) {
         if (curr_ == ptr) curr_ = curr_->next;
         if (root_ == ptr) root_ = root_->next;
         before->next = ptr->next;
         return true;
       }
-      if (root_ == ptr->next)
-        return false;
+      if (root_ == ptr->next) return false;
     }
   }
 
@@ -61,7 +59,7 @@ class CircularList {
     if (nullptr == root_) return 0;
     std::shared_ptr<Node> ptr = root_->next;
     size_t sz = 1;
-    for (;ptr != root_; ptr = ptr->next, ++sz) {
+    for (; ptr != root_; ptr = ptr->next, ++sz) {
     }
     return sz;
   }
@@ -69,8 +67,7 @@ class CircularList {
   void Next(T *out) {
     std::lock_guard<std::mutex> lock(m_);
 
-    if (nullptr == root_)
-      return;
+    if (nullptr == root_) return;
     curr_ = curr_->next;
     *out = curr_->item;
   }
@@ -88,7 +85,7 @@ class CircularList {
   void Print() const {
     if (nullptr == root_) return;
     std::cout << "List elements:" << std::endl;
-    for (std::shared_ptr<Node> ptr = root_;;ptr = ptr->next) {
+    for (std::shared_ptr<Node> ptr = root_;; ptr = ptr->next) {
       std::cout << ptr->item << std::endl;
       if (ptr->next == root_) break;
     }
@@ -96,8 +93,7 @@ class CircularList {
 
   bool Find(const T &item) const {
     if (nullptr == root_) return false;
-    std::shared_ptr<Node> ptr = root_;
-    for (;;) {
+    for (std::shared_ptr<Node> ptr = root_;;) {
       if (ptr->item == item) {
         return true;
       }

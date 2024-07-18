@@ -4,7 +4,7 @@
 #include "tests/3rdparty/googletest/googletest/include/gtest/gtest.h"
 
 TEST(circular_list, All) {
-    CircularList<int> list;
+  CircularList<int> list;
 
   list.Print();
   EXPECT_TRUE(list.Empty());
