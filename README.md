@@ -1,5 +1,9 @@
 # C++ Header-only Templated Implementation of Circular List
 
+No `new` or `delete`. Using Smart Pointers.
+
+your type needs to have `operator==`.
+
 Usage:
 
 ```cpp
