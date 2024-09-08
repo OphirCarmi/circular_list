@@ -31,6 +31,11 @@ class CircularList {
   bool Remove(const T &item) {
     std::lock_guard<std::mutex> lock(m_);
     if (nullptr == root_) return false;
+    if (root_ == root_->next && root_->item == item) {
+      // there is only one item in the list
+      root_ = nullptr;
+      return true;
+    }
     std::shared_ptr<Node> before = root_;
     for (;;) {
       if (before->next == root_) break;

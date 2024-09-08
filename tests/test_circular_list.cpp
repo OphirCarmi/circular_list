@@ -175,3 +175,22 @@ TEST(circular_list, All) {
   EXPECT_EQ(list.Size(), static_cast<size_t>(0));
   EXPECT_EQ(list.Index(), -1);
 }
+
+TEST(circular_list, Remove) {
+  CircularList<int> list;
+
+  list.Print();
+  EXPECT_TRUE(list.Empty());
+  EXPECT_EQ(list.Size(), static_cast<size_t>(0));
+  EXPECT_EQ(list.Index(), -1);
+  list.Insert(3);
+  list.Print();
+  EXPECT_FALSE(list.Empty());
+  EXPECT_EQ(list.Size(), static_cast<size_t>(1));
+  EXPECT_EQ(list.Index(), 0);
+  EXPECT_TRUE(list.Remove(3));
+  list.Print();
+  EXPECT_TRUE(list.Empty());
+  EXPECT_EQ(list.Size(), static_cast<size_t>(0));
+  EXPECT_EQ(list.Index(), -1);
+}
