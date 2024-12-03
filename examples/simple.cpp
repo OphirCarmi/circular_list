@@ -33,8 +33,7 @@ int main() {
 
   // Next() will always show a value (if the list is not empty)
   for (int i = 0; i < 15; ++i) {
-    int curr = -1;
-    list.Next(&curr);
+    int curr = list.Next().value_or(-1);
     int j = list.Index();
     std::cout << "Next item is in index: " << j << " and its value: " << curr << std::endl;
   }
