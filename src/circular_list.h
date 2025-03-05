@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <mutex>
+#include <optional>
 
 template <typename T>
 class CircularList {
@@ -69,12 +70,12 @@ class CircularList {
     return sz;
   }
 
-  void Next(T *out) {
+  std::optional<T> Next() {
     std::lock_guard<std::mutex> lock(m_);
 
-    if (nullptr == root_) return;
+    if (nullptr == root_) return std::nullopt;
     curr_ = curr_->next;
-    *out = curr_->item;
+    return curr_->item;
   }
 
   int Index() const {
