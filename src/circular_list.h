@@ -63,7 +63,7 @@ class CircularList {
   size_t Size() const {
     if (nullptr == root_) return 0;
     std::shared_ptr<Node> ptr = root_->next;
-    size_t sz = 1;
+    size_t sz{1};
     for (; ptr != root_; ptr = ptr->next, ++sz) {
     }
     return sz;
@@ -81,7 +81,7 @@ class CircularList {
     if (nullptr == root_) return -1;
     std::shared_ptr<Node> ptr = root_;
     if (ptr == curr_) return 0;
-    for (int ind = 1;; ++ind) {
+    for (int ind{1};; ++ind) {
       ptr = ptr->next;
       if (ptr == curr_) return ind;
     }
@@ -99,9 +99,8 @@ class CircularList {
   bool Find(const T &item) const {
     if (nullptr == root_) return false;
     for (std::shared_ptr<Node> ptr = root_;;) {
-      if (ptr->item == item) {
-        return true;
-      }
+      if (ptr->item == item) return true;
+
       ptr = ptr->next;
       if (root_ == ptr) return false;
     }
@@ -109,7 +108,6 @@ class CircularList {
 
  private:
   struct Node {
-    Node() {}
     T item;
     std::shared_ptr<Node> next;
   };
